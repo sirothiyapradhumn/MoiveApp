@@ -94,6 +94,11 @@
   justify-content: center;
 }
 
+.pagination{
+  display: flex;
+  justify-content: center;
+}
+
 @media screen and
 (max-width: 400px){
   .banner-card{
@@ -113,5 +118,19 @@
     top: 15vh;
     left: 5vw;
   }
+
+  .movie-card{
+    width: 40vw;
+    margin: 0.5rem;
+  }
+
+  .movie-button{
+    width: 80%;
+  }
+  
+  .movie-image{
+    width: 40vw;
+  }
+
 }
 
