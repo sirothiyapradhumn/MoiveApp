@@ -5,7 +5,7 @@ import API_KEY from '../secrets';
 export default class List extends Component {
   constructor(){
     super();
-    //console.log("constructor is called");
+    console.log("constructor is called");
     this.state = {
       hover: "",
       parr: [1], //ab tak mai konse page par  hu, or what page am i showing
@@ -26,11 +26,48 @@ export default class List extends Component {
     })
   }
 
+  changeMovies = async () => {
+    console.log(this.state.currentPage);
+    console.log("changeMovies called");
+    let ans = await axios.get(`https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}&language=en-US&page=${this.state.currentPage}`);
+
+    this.setState({
+      movies:[...ans.data.results] //spread
+    })
+  }
+
+  handleNext = () => {
+    let tempArr = [];
+    for(let i = 1; i<=this.state.parr.length+1; i++){
+      tempArr.push(i); //[1,2]
+    }
+    this.setState({
+      parr: [...tempArr],
+      currentPage: this.state.currentPage + 1,
+    }, this.changeMovies);
+    //this.changeMovies();
+  }
+
+  handelPrevious = () => {
+    if(this.state.currentPage != 1){
+      this.setState({
+        currentPage: this.state.currentPage - 1,
+      }, this.changeMovies);
+      //this.changeMovies();
+    }
+  }
+
+  handlePageNo = (pageno) => {
+    this.setState({
+      currentPage: pageno,
+    }, this.changeMovies);
+  }
+
   async componentDidMount(){
-    //console.log("componentDidMount is called");
+    console.log("componentDidMount is called");
     //console.log(API_KEY);
     let ans = await axios.get(`https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}&language=en-US&page=${this.state.currentPage}`);
-    console.log(ans.data);
+    //console.log(ans.data);
 
     this.setState({
       movies:[...ans.data.results] //spread
@@ -38,7 +75,7 @@ export default class List extends Component {
   } 
 
   render() {
-    //console.log("render is called");
+    console.log("render is called");
     //let movies = movies.results;
     return (
       <>
@@ -71,13 +108,13 @@ export default class List extends Component {
               <div className='pagination'>
                 <nav aria-label="Page navigation example">
                   <ul class="pagination">
-                    <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+                    <li class="page-item"><a class="page-link" onClick={this.handelPrevious}>Previous</a></li>
                     {
                       this.state.parr.map((pageNum)=>(
-                        <li class="page-item"><a class="page-link" href="#">{pageNum}</a></li>
+                        <li class="page-item"><a class="page-link" onClick={()=>this.handlePageNo(pageNum)}>{pageNum}</a></li>
                       ))
                     }
-                    <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                    <li class="page-item"><a class="page-link" onClick={this.handleNext}>Next</a></li>
                   </ul>
                 </nav>
               </div>
