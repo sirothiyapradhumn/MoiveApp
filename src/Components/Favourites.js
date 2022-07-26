@@ -9,6 +9,7 @@ export default class Favourites extends Component {
             movies : [],
             genre: [],
             currGenre: "All Genere",
+            currText: "",
         }
     }
 
@@ -37,6 +38,12 @@ export default class Favourites extends Component {
     handelClick = (genreName) => {
         this.setState({
             currGenre: genreName,
+        })
+    }
+
+    handeltext = (e) =>{
+        this.setState({
+            currText: e.target.value,
         })
     }
 
@@ -69,7 +76,7 @@ export default class Favourites extends Component {
             </div>
             <div class="col-9 favourites-table">
                 <div class ="row">
-                    <input type ="text" className='col' placeholder='Search'></input>
+                    <input type ="text" className='col' placeholder='Search' value={this.state.currText} onChange={this.handeltext}></input>
                     <input type ="text" className='col' placeholder='5'></input>
                 </div>
                 <div class= "row">
@@ -78,8 +85,16 @@ export default class Favourites extends Component {
                             <tr>
                             <th scope="col">Title</th>
                             <th scope="col">Genre</th>
-                            <th scope="col">Popularity</th>
-                            <th scope="col">Rating</th>
+                            <th scope="col">
+                                <i class="fa-solid fa-caret-up"/>
+                                Popularity
+                                <i class="fa-solid fa-caret-down"/>
+                            </th>
+                            <th scope="col">
+                                <i class="fa-solid fa-caret-up"/>
+                                Rating
+                                <i class="fa-solid fa-caret-down"/>
+                            </th>
                             <th scope="col"></th>
                             </tr>
                         </thead>
