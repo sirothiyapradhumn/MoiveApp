@@ -5,12 +5,13 @@ import API_KEY from '../secrets';
 export default class List extends Component {
   constructor(){
     super();
-    console.log("constructor is called");
+    //console.log("constructor is called");
     this.state = {
       hover: "",
       parr: [1], //ab tak mai konse page par  hu, or what page am i showing
       currentPage: 1,
       movies: [],
+      favMov: [], // favMovies (favMov) this will store the id of the movies added to favourites
     };
   }
 
@@ -63,8 +64,29 @@ export default class List extends Component {
     }, this.changeMovies);
   }
 
+  handleFavourites = (movieObj) => { //jurassic park
+
+    let localStorageMovies = JSON.parse(localStorage.getItem("movies")) || [];
+    
+    if(this.state.favMov.includes(movieObj.id)){ // remove
+      localStorageMovies = localStorageMovies.filter((movie) => movie.id != movieObj.id);
+    }
+    else{ // add
+      localStorageMovies.push(movieObj);
+    }
+
+    console.log(localStorageMovies);
+
+    localStorage.setItem("movies", JSON.stringify(localStorageMovies));
+    let tempData = localStorageMovies.map(movieObj => movieObj.id);
+
+    this.setState({
+      favMov: [...tempData],
+    })
+  }
+
   async componentDidMount(){
-    console.log("componentDidMount is called");
+    //console.log("componentDidMount is called");
     //console.log(API_KEY);
     let ans = await axios.get(`https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}&language=en-US&page=${this.state.currentPage}`);
     //console.log(ans.data);
@@ -75,7 +97,7 @@ export default class List extends Component {
   } 
 
   render() {
-    console.log("render is called");
+    //console.log("render is called");
     //let movies = movies.results;
     return (
       <>
@@ -97,7 +119,7 @@ export default class List extends Component {
                       <h5 className="card-title movie-title">{movieObj.original_title}</h5>
                       <div className='button-wrapper'>
                         {
-                          this.state.hover == movieObj.id && <a href="#" class="btn btn-primary movie-button">Add to Favourites</a>
+                          this.state.hover == movieObj.id && <a  class="btn btn-primary movie-button" onClick={()=> this.handleFavourites(movieObj)}>Add to Favourites</a>
                         }
                         
                       </div>
