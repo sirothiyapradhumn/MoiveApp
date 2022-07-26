@@ -63,7 +63,7 @@ export default class Favourites extends Component {
                 </div>
                 <div class= "row">
                     <table class="table">
-                        <thead>
+                        <thead class="table-dark">
                             <tr>
                             <th scope="col">Title</th>
                             <th scope="col">Genre</th>
