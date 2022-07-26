@@ -47,16 +47,70 @@ export default class Favourites extends Component {
         })
     }
 
+    sortPopularityAsc = () =>{
+        let allMovies = this.state.movies;
+        allMovies.sort((objA, objB)=> {
+            return objA.popularity - objB.popularity;
+        });
+
+        this.setState({
+            movies: [...allMovies],
+        });
+    }
+
+    sortPopularityDesc = () =>{
+        let allMovies = this.state.movies;
+        allMovies.sort((objA, objB)=> {
+            return objB.popularity - objA.popularity;
+        });
+
+        this.setState({
+            movies: [...allMovies],
+        });
+    }
+
+    sortRatingAsc = () =>{
+        let allMovies = this.state.movies;
+        allMovies.sort((objA, objB)=> {
+            return objA.vote_average - objB.vote_average;
+        });
+
+        this.setState({
+            movies: [...allMovies],
+        });
+    }
+
+    sortRatingDesc = () =>{
+        let allMovies = this.state.movies;
+        allMovies.sort((objA, objB)=> {
+            return objB.vote_average - objA.vote_average;
+        });
+
+        this.setState({
+            movies: [...allMovies],
+        });
+    }
+
   render() {
     let genreId={28:'Action',12:'Adventure',16:'Animation',35:'Comedy',80:'Crime',99:'Documentary',18:'Drama',10751:'Family',14:'Fantasy',36:'History',27:'Horror',10402:'Music',9648:'Mystery',10749:'Romance',878:'Sci-Fi',10770:'TV',53:'Thriller',10752:'War',37:'Western'}
 
-    let filteredMovies = [];
-    if(this.state.currGenre != "All Genere"){
-        filteredMovies = this.state.movies.filter((movieObj) => genreId[movieObj.genre_ids[0]] == this.state.currGenre);
-    }
-    else{
+    let filteredMovies = this.state.movies;
+
+    if(this.state.currText === ""){
         filteredMovies = this.state.movies;
     }
+    else{
+        filteredMovies = filteredMovies.filter((movieObj) =>{
+            let movieName = movieObj.original_title.toLowerCase();
+            return movieName.includes(this.state.currText); //[t,o,p, ,g,u,n, ,m,a,v,e,r,i,c,k]
+        });
+    }
+
+
+    if(this.state.currGenre != "All Genere"){
+        filteredMovies = filteredMovies.filter((movieObj) => genreId[movieObj.genre_ids[0]] == this.state.currGenre);
+    }
+
 
     return (
         <div class="row">
@@ -86,14 +140,14 @@ export default class Favourites extends Component {
                             <th scope="col">Title</th>
                             <th scope="col">Genre</th>
                             <th scope="col">
-                                <i class="fa-solid fa-caret-up"/>
+                                <i class="fa-solid fa-caret-up" onClick={this.sortPopularityAsc}/>
                                 Popularity
-                                <i class="fa-solid fa-caret-down"/>
+                                <i class="fa-solid fa-caret-down" onClick={this.sortPopularityDesc}/>
                             </th>
                             <th scope="col">
-                                <i class="fa-solid fa-caret-up"/>
+                                <i class="fa-solid fa-caret-up" onClick={this.sortRatingAsc}/>
                                 Rating
-                                <i class="fa-solid fa-caret-down"/>
+                                <i class="fa-solid fa-caret-down" onClick={this.sortRatingDesc}/>
                             </th>
                             <th scope="col"></th>
                             </tr>
