@@ -67,7 +67,7 @@ export default class List extends Component {
   handleFavourites = (movieObj) => { //jurassic park
 
     let localStorageMovies = JSON.parse(localStorage.getItem("movies")) || [];
-    
+
     if(this.state.favMov.includes(movieObj.id)){ // remove
       localStorageMovies = localStorageMovies.filter((movie) => movie.id != movieObj.id);
     }
@@ -119,7 +119,7 @@ export default class List extends Component {
                       <h5 className="card-title movie-title">{movieObj.original_title}</h5>
                       <div className='button-wrapper'>
                         {
-                          this.state.hover == movieObj.id && <a  class="btn btn-primary movie-button" onClick={()=> this.handleFavourites(movieObj)}>Add to Favourites</a>
+                          this.state.hover == movieObj.id && <a  class="btn btn-primary movie-button" onClick={()=> this.handleFavourites(movieObj)}> {this.state.favMov.includes(movieObj.id) ? "Remove from Favourites" : "Add to Favourites"}</a>
                         }
                         
                       </div>
