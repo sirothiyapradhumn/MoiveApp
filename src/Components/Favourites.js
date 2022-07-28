@@ -99,6 +99,18 @@ export default class Favourites extends Component {
         })
     }
 
+    handleDelete = (id) =>{
+        let newMovies = this.state.movies.filter((movieObj) =>{
+            return movieObj.id != id;
+        })
+
+        this.setState({
+            movies:[...newMovies],
+        })
+
+        localStorage.setItem("movies" , JSON.stringify(newMovies));
+    }
+
   render() {
     let genreId={28:'Action',12:'Adventure',16:'Animation',35:'Comedy',80:'Crime',99:'Documentary',18:'Drama',10751:'Family',14:'Fantasy',36:'History',27:'Horror',10402:'Music',9648:'Mystery',10749:'Romance',878:'Sci-Fi',10770:'TV',53:'Thriller',10752:'War',37:'Western'}
 
@@ -146,8 +158,8 @@ export default class Favourites extends Component {
             </div>
             <div class="col-9 favourites-table">
                 <div class ="row">
-                    <input type ="text" className='col' placeholder='Search' value={this.state.currText} onChange={this.handeltext}></input>
-                    <input type ="text" className='col' placeholder='5'></input>
+                    <input type ="text" className='col-8' placeholder='Search' value={this.state.currText} onChange={this.handeltext}></input>
+                    <input type ="number" className='col-4'  value={this.state.limit} onChange={(e)=> this.setState({limit: e.target.value})}></input>
                 </div>
                 <div class= "row">
                     <table class="table">
@@ -178,7 +190,7 @@ export default class Favourites extends Component {
                                     <td>{genreId[movieObj.genre_ids[0]]}</td>
                                     <td>{movieObj.popularity}</td>
                                     <td>{movieObj.vote_average}</td>
-                                    <td><button type="button" class="btn btn-outline-danger">Delete</button></td>
+                                    <td><button type="button" class="btn btn-outline-danger" onClick={()=>this.handleDelete(movieObj.id)}>Delete</button></td>
                                     </tr>
                                 ))
                             }
