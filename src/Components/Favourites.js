@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import API_KEY from '../secrets';
-import axios from 'axios';
+//import API_KEY from '../secrets';
+//import axios from 'axios';
 
 export default class Favourites extends Component {
     constructor(){
@@ -10,6 +10,8 @@ export default class Favourites extends Component {
             genre: [],
             currGenre: "All Genere",
             currText: "",
+            limit: 5,
+            currPage: 1,
         }
     }
 
@@ -91,6 +93,12 @@ export default class Favourites extends Component {
         });
     }
 
+    handlePageNum = (page) =>{
+        this.setState({
+            currPage: page,
+        })
+    }
+
   render() {
     let genreId={28:'Action',12:'Adventure',16:'Animation',35:'Comedy',80:'Crime',99:'Documentary',18:'Drama',10751:'Family',14:'Fantasy',36:'History',27:'Horror',10402:'Music',9648:'Mystery',10749:'Romance',878:'Sci-Fi',10770:'TV',53:'Thriller',10752:'War',37:'Western'}
 
@@ -107,10 +115,18 @@ export default class Favourites extends Component {
     }
 
 
-    if(this.state.currGenre != "All Genere"){
+    if(this.state.currGenre !== "All Genere"){
         filteredMovies = filteredMovies.filter((movieObj) => genreId[movieObj.genre_ids[0]] == this.state.currGenre);
     }
 
+    let noOfPages = Math.ceil(filteredMovies.length/ this.state.limit);
+    let pagesArr = [];
+    for(let i = 1; i<=noOfPages; i++){
+        pagesArr.push(i); // [1,2,3,4]
+    }
+    let si = (this.state.currPage -1) * this.state.limit;
+    let ei = si + (this.state.limit-1);
+    filteredMovies = filteredMovies.slice(si, ei+1);   //ei= 10 -> 9 so thatwhy we +1 to ei
 
     return (
         <div class="row">
@@ -171,6 +187,17 @@ export default class Favourites extends Component {
                 </div>
                 
             </div>
+            <nav aria-label="Page navigation example">
+                <ul class="pagination">
+                    {
+                        pagesArr.map((page) =>(
+                            <li class="page-item">
+                                <a class="page-link" onClick={()=>this.handlePageNum(page)}>{page}</a>
+                            </li>
+                        ))
+                    }
+                </ul>
+            </nav>
         </div>
         
     )
