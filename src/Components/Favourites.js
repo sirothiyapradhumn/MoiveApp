@@ -29,7 +29,7 @@ export default class Favourites extends Component {
             }
         });
         genreArr.unshift("All Genere");
-        console.log(genreArr);
+        //console.log(genreArr);
         
         this.setState({
         movies:[...results], //spread
@@ -111,6 +111,16 @@ export default class Favourites extends Component {
         localStorage.setItem("movies" , JSON.stringify(newMovies));
     }
 
+    handleLimit = (e) =>{
+        if( e.target.value >=1){
+            this.setState({
+                limit: e.target.value,
+            })
+        }
+        
+        
+    }
+
   render() {
     let genreId={28:'Action',12:'Adventure',16:'Animation',35:'Comedy',80:'Crime',99:'Documentary',18:'Drama',10751:'Family',14:'Fantasy',36:'History',27:'Horror',10402:'Music',9648:'Mystery',10749:'Romance',878:'Sci-Fi',10770:'TV',53:'Thriller',10752:'War',37:'Western'}
 
@@ -158,8 +168,8 @@ export default class Favourites extends Component {
             </div>
             <div class="col-9 favourites-table">
                 <div class ="row">
-                    <input type ="text" className='col-8' placeholder='Search' value={this.state.currText} onChange={this.handeltext}></input>
-                    <input type ="number" className='col-4'  value={this.state.limit} onChange={(e)=> this.setState({limit: e.target.value})}></input>
+                    <input type ="text" className='col' placeholder='Search' value={this.state.currText} onChange={this.handeltext}></input>
+                    <input type ="number" className='col-2'  value={this.state.limit} onChange={this.handleLimit}></input>
                 </div>
                 <div class= "row">
                     <table class="table">
